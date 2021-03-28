@@ -24,8 +24,33 @@ function draw() {
   background(0);
   angleMode(DEGREES);
 
+  fill(255);
+  noStroke();
+  ellipse(40,40,40,40);
+  ellipse(60,60,40,40);
+
+  //construct a 2d numeric array of pixel brightnesses, row by row
+  let pixels = [];
+  for(let y=0;y<height;y++){
+    let xRow = [];
+    for(let x=0;x<width;x++){
+      xRow.push( brightness(get(x,y)) );
+    }
+    pixels.push(xRow);
+  }
+
+  //call and draw marching vectors
+  stroke(0,255,0);
+  strokeWeight(3);
+  noFill();
+  let lines = marchingSquares(pixels);
+  console.log(lines);
+  lines.map(function(a){
+    line(a[0],a[1],a[2],a[3]);
+  });
+
   var points = [
-    [450,450], [450,500],
+    [450,450], [450,500], [475,460],
     [500,500], [500,450], [450,450]
   ];
   var offset = new Offset();
@@ -40,13 +65,13 @@ function draw() {
   }
   endShape();
   stroke(255, 0, 0);
-  beginShape();
   for( var i = 0; i < margined.length; i++) {
+    beginShape();
     for( var j = 0; j < margined[i].length; j++) {
       vertex(margined[i][j][0], margined[i][j][1]);
     }
+    endShape();
   }
-  endShape();
 
 }
 
